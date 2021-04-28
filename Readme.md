@@ -6,7 +6,7 @@ An immutable `int` based geometry implementation for netstandard2.1
 *this project is in active development and not suitable for production use at this time*
 
 
-**Available Data Types:** `Point`, `Size`, `Vector`, `Rectangle`, and `Shape`
+**Available Data Types:** `Point`, `Size`, `Vector`, `Line`, `Rectangle`, and `Shape`
 
 TODO: Documentation
 

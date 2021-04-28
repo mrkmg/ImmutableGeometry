@@ -21,6 +21,9 @@ namespace ImmutableGeometry
         public Point Translate(int x, int y)
             => new(X + x, Y + y);
 
+        public Point Transpose()
+            => new(Y, X);
+
         public static implicit operator Point(Size size) 
             => new(size.Width, size.Height);
 
@@ -41,6 +44,9 @@ namespace ImmutableGeometry
 
         public static Point operator -(Point point, Vector vector)
             => new(point.X - vector.X, point.Y - vector.Y);
+
+        public static Point operator *(Point point, Vector vector)
+            => new(point.X * vector.X, point.Y * vector.Y);
 
         public static Point operator -(Point point)
             => new(-point.X, -point.Y);

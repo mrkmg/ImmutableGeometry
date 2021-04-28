@@ -31,6 +31,9 @@ namespace ImmutableGeometry
         public static IEnumerable<Point> Translate(this IEnumerable<Point> points, int x, int y)
             => points.Select(p => p.Translate(x, y));
 
+        public static IEnumerable<Point> Transpose(this IEnumerable<Point> points)
+            => points.Select(p => new Point(p.Y, p.X));
+
         public static IEnumerable<Point> Scale(this IEnumerable<Point> points, double scaleX, double scaleY) =>
             points.Select(c =>
                 new Point((int) (c.X * scaleX), (int) (c.Y * scaleY)));

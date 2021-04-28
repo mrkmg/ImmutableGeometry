@@ -22,26 +22,6 @@ namespace ImmutableGeometry
         public Shape(params (int X, int Y)[] xyValueTuples) 
             : this(xyValueTuples.Select(t => new Point(t.X, t.Y))) { }
 
-        public Shape Scale(double amount) => Scale(amount, amount);
-        public Shape Scale(Vector amount) => Scale(amount.X, amount.Y);
-        public Shape Scale(double x, double y) 
-            => new (Corners.Translate(-Bounds.Center.X, -Bounds.Center.Y)
-                .Scale(x, y)
-                .Translate(Bounds.Center.X, Bounds.Center.Y));
-
-
-        public Shape Translate(int x, int y) => Translate(new Vector(x, y));
-        public Shape Translate(Vector amount) 
-            => new (Corners.Translate(amount));
-
-        public Shape Rotate(double amount)
-            => new (Corners.Translate(-Bounds.Center.X, -Bounds.Center.Y)
-                    .Rotate(amount)
-                    .Translate(Bounds.Center.X, Bounds.Center.Y));
-
-        public Shape Mirror(bool xAxis, bool yAxis)
-            => new (Corners.Mirror(xAxis, yAxis));
-
         public Shape(IEnumerable<Point> corners)
         {
             var cornersArray = corners.ToArray();
@@ -65,6 +45,40 @@ namespace ImmutableGeometry
             }
             else Corners = cornersArray.ToList().AsReadOnly();
             Bounds = Corners.Bounds();
+        }
+        
+        public Shape Scale(double amount) => Scale(amount, amount);
+        public Shape Scale(Vector amount) => Scale(amount.X, amount.Y);
+        public Shape Scale(double x, double y) 
+            => new (Corners.Translate(-Bounds.Center.X, -Bounds.Center.Y)
+                .Scale(x, y)
+                .Translate(Bounds.Center.X, Bounds.Center.Y));
+
+
+        public Shape Translate(int x, int y) => Translate(new Vector(x, y));
+        public Shape Translate(Vector amount) 
+            => new (Corners.Translate(amount));
+
+        public Shape Rotate(double amount)
+            => new (Corners.Translate(-Bounds.Center.X, -Bounds.Center.Y)
+                .Rotate(amount)
+                .Translate(Bounds.Center.X, Bounds.Center.Y));
+
+        public Shape Mirror(bool xAxis, bool yAxis)
+            => new (Corners.Mirror(xAxis, yAxis));
+
+        public bool IntersectsWith(Shape other)
+        {
+            // Use the cheaper bounds check first
+            if (!Bounds.IntersectsWith(other.Bounds)) return false;
+            if (Bounds.Area > other.Bounds.Area)
+            {
+                var myHash = Points.ToHashSet();
+                return other.Points.Any(p => myHash.Contains(p));
+            }
+
+            var otherHash = other.Points.ToHashSet();
+            return Points.Any(p => otherHash.Contains(p));
         }
 
         public bool Equals(Shape other)

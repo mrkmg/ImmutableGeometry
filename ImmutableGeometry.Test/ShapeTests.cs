@@ -11,49 +11,44 @@ namespace ImmutableGeometry.Test.ShapeTests
     public class ShapeTests
     { 
         
-    private static readonly Shape TestShape = new (
-        (0,0), (0, 5), (5, 5), (5, 10), (0, 10), (0, 15), (10, 10), (10, 3));
+    private static readonly Shape TestShape 
+        = new ((0,0), (0, 5), (5, 5), (5, 10), (0, 10), (0, 15), (10, 10), (10, 3));
     
-    private static readonly Shape TestWithNodesOutOfOrder = new (
-        (0, 5), (5, 5), (5, 10), (0, 10), (0, 15), (10, 10), (10, 3), (0,0));
+    private static readonly Shape TestWithNodesOutOfOrder 
+        = new ((0, 5), (5, 5), (5, 10), (0, 10), (0, 15), (10, 10), (10, 3), (0,0));
+    
+    private static readonly Shape TestSquare 
+        = new ((0, 0), (0, 5), (5, 5), (5, 0));
+    
+    private static readonly Shape TestDiamond 
+        = new ((0, -5), (-5, 0), (5, 5), (5, 0));
+    
+    private static readonly Shape TestTranslated 
+        = new ((25,50), (25,55), (30,55), (30,60), (25,60), (25,65), (35,60), (35,53));
+    
+    private static readonly Shape TestRotated 
+        = new ((4,-1), (2,4), (6,6), (11,6), (0,8), (5,9), (8,11), (-2,12));
+    
+    private static readonly Shape TestScaled 
+        = new ((-5,-16), (15,-7), (-5,-1), (5,-1), (-5,14), (5,14), (15,14), (-5,29));
+    
+    private static readonly Shape TestScaledDoubled 
+        = new ((-5,-8), (15,-2), (-5,2), (5,2), (-5,12), (5,12), (15,12), (-5,22));
 
-    private static readonly Shape TestL = new(new Point[]
-        {new(-2, -4), new(-2, 4), new(2, 4), new(2, 2), new(0, 2), new(0, -4)});
+    private static readonly Shape TestMirroredX 
+        = new ((0,0), (-10,3), (-5,5), (0,5), (-10,10), (-5,10), (0,10), (0,15));
     
-    private static readonly Shape TestSquare = new (
-        (0, 0), (0, 5), (5, 5), (5, 0));
-    
-    private static readonly Shape TestDiamond = new (
-        (0, -5), (-5, 0), (5, 5), (5, 0));
-    
-    private static readonly Shape TestTranslated = new (
-        (25,50), (25,55), (30,55), (30,60), (25,60), (25,65), (35,60), (35,53));
-    
-    private static readonly Shape TestRotated = new (
-        (4,-1), (2,4), (6,6), (11,6), (0,8), (5,9), (8,11), (-2,12));
-    
-    public static readonly Shape TestScaled = new (
-        (-5,-16), (15,-7), (-5,-1), (5,-1), (-5,14), (5,14), (15,14), (-5,29));
-    
-    public static readonly Shape TestScaledDoubled = new(
-        (-5,-8), (15,-2), (-5,2), (5,2), (-5,12), (5,12), (15,12), (-5,22));
+    private static readonly Shape TestMirroredY 
+        = new ((0,-15), (0,-10), (5,-10), (10,-10), (0,-5), (5,-5), (10,-3), (0,0));
 
-    public static readonly Shape TestMirroredX = new(
-        (0,0), (-10,3), (-5,5), (0,5), (-10,10), (-5,10), (0,10), (0,15));
-    
-    public static readonly Shape TestMirroredY = new(
-        (0,-15), (0,-10), (5,-10), (10,-10), (0,-5), (5,-5), (10,-3), (0,0));
-    
-    private static readonly Point[] TestEdgePoints = new []
-    {
+    private static readonly Point[] ExpectedEdgePoints = TestHelpers.Points(
         (0,0), (0,1), (0,2), (0,3), (0,4), (0,5), (1,5), (2,5), (3,5), (4,5), (5,5), (5,6), (5,7), (5,8), (5,9), (5,10),
         (4,10), (3,10), (2,10), (1,10), (0,10), (0,11), (0,12), (0,13), (0,14), (0,15), (1,15), (2,14), (3,14), (4,13),
         (5,13), (6,12), (7,12), (8,11), (9,11), (10,10), (10,9), (10,8), (10,7), (10,6), (10,5), (10,4), (10,3), (9,3),
         (8,2), (7,2), (6,2), (5,2), (4,1), (3,1), (2,1), (1,0)
-    }.AsPoints().ToArray();
+    );
 
-    private static readonly Point[] TestAllPoints = new []
-    {
+    private static readonly Point[] ExpectedPoints = TestHelpers.Points(
         (0,0), (1,0), (0,1), (1,1), (2,1), (3,1), (4,1), (0,2), (1,2), (2,2), (3,2), (4,2), (5,2), (6,2), (7,2), (8,2),
         (0,3), (1,3), (2,3), (3,3), (4,3), (5,3), (6,3), (7,3), (8,3), (9,3), (10,3), (0,4), (1,4), (2,4), (3,4), (4,4),
         (5,4), (6,4), (7,4), (8,4), (9,4), (10,4), (0,5), (1,5), (2,5), (3,5), (4,5), (5,5), (6,5), (7,5), (8,5), (9,5),
@@ -62,16 +57,18 @@ namespace ImmutableGeometry.Test.ShapeTests
         (5,10), (6,10), (7,10), (8,10), (9,10), (10,10), (0,11), (1,11), (2,11), (3,11), (4,11), (5,11), (6,11), (7,11),
         (8,11), (9,11), (0,12), (1,12), (2,12), (3,12), (4,12), (5,12), (6,12), (7,12), (0,13), (1,13), (2,13), (3,13),
         (4,13), (5,13), (0,14), (1,14), (2,14), (3,14), (0,15), (1,15)
-
-    }.AsPoints().ToArray();
+    );
     
-    [Test] public void Debug() => TestHelpers.DebugShape(TestShape);
+    // [Test] public void Debug() => TestHelpers.Debug(TestDiamond);
     
     public class Fields 
     {
         
-        [Test] public void EdgePoints() => Assert.That(TestShape.EdgePoints, Is.EquivalentTo(TestEdgePoints));
-        [Test] public void Points() => Assert.That(TestShape.Points, Is.EquivalentTo(TestAllPoints));
+        [Test] public void EdgePoints() 
+            => Assert.That(TestShape.EdgePoints, Is.EquivalentTo(ExpectedEdgePoints));
+        
+        [Test] public void Points() 
+            => Assert.That(TestShape.Points, Is.EquivalentTo(ExpectedPoints));
     }
 
     public class Methods

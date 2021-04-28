@@ -12,12 +12,14 @@ namespace ImmutableGeometry.Test.VectorTests
     {
     
     private static readonly Vector Test = new (4, -3);
-    public static readonly List<Point> Line = new [] {(0, 0), (1, -1), (2, -1), (3, -2)}.AsPoints().ToList();
 
     public class Construct
     {
-        [Test] public void FromPolarPositive() => Assert.AreEqual(new Vector(2, 1), Vector.FromPolar(Math.PI / 8, 3));
-        [Test] public void FromPolarNegative() => Assert.AreEqual(new Vector(-1, -2), Vector.FromPolar(-5 * Math.PI / 8, 3));
+        [Test] public void FromPolarPositive() 
+            => Assert.That(Vector.FromPolar(Math.PI / 8, 3), Is.EqualTo(new Vector(2, 1)));
+            
+        [Test] public void FromPolarNegative() 
+            => Assert.That(Vector.FromPolar(-5 * Math.PI / 8, 3), Is.EqualTo(new Vector(-1, -2)));
     }
 
     public class Fields {
@@ -33,42 +35,83 @@ namespace ImmutableGeometry.Test.VectorTests
 
     public class Methods
     {
-        [Test] public void RotatePositive() => Assert.AreEqual(new Vector(3, 4), Test.Rotate(Math.PI / 2));
-        [Test] public void RotateNegative() => Assert.AreEqual(new Vector(-3, -4), Test.Rotate(-Math.PI / 2));
-        [Test] public void Extend() => Assert.AreEqual(new Vector(5, -4), Test.Extend(2));
-        [Test] public void Shrink() => Assert.AreEqual(new Vector(1, -1), Test.Shrink(3));
-        [Test] public void Cross() => Assert.AreEqual(85, Test.Cross(new Vector(11, 13)));
-        [Test] public void Scale() => Assert.AreEqual(new Vector(8, -6), Test.Scale(2));
+        [Test] public void RotatePositive() 
+            => Assert.That(Test.Rotate(Math.PI / 2), Is.EqualTo(new Vector(3, 4)));
+            
+        [Test] public void RotateNegative() 
+            => Assert.That(Test.Rotate(-Math.PI / 2), Is.EqualTo(new Vector(-3, -4)));
+            
+        [Test] public void Extend() 
+            => Assert.That(Test.Extend(2), Is.EqualTo(new Vector(5, -4)));
+            
+        [Test] public void Shrink() 
+            => Assert.That(Test.Shrink(3), Is.EqualTo(new Vector(1, -1)));
+            
+        [Test] public void Cross() 
+            => Assert.That(Test.Cross(new Vector(11, 13)), Is.EqualTo(85));
+        
+        [Test] public void Scale() 
+            => Assert.That(Test.Scale(2), Is.EqualTo(new Vector(8, -6)));
+            
     }
     
     public class Casts {
-        [Test] public void Size() => Assert.AreEqual(new Vector(5, 10), (Vector) new Size(5, 10));
-        [Test] public void ToPoint() => Assert.AreEqual(new Vector(5, 10), (Vector) new Point(5, 10));
-        [Test] public void ToLine() 
-            => Assert.AreEqual(new Vector(5, 10), (Vector) new Line(new Point(3, 7), new Point(8, 17))); 
+        [Test] public void Size() 
+            => Assert.That((Vector) new Size(5, 10), Is.EqualTo(new Vector(5, 10)));
+            
+        [Test] public void Point() 
+            => Assert.That((Vector) new Point(5, 10), Is.EqualTo(new Vector(5, 10)));
+            
+        [Test] public void Line() 
+            => Assert.That((Vector) new Line(new Point(3, 7), new Point(8, 17)), Is.EqualTo(new Vector(5, 10)));
+
+        [Test] public void Tuple()
+            => Assert.That((Vector) (5, 10), Is.EqualTo(new Vector(5, 10)));
     }
     
     public class Operators {
-        [Test] public void Plus() => Assert.AreEqual(new Vector(31, 27), new Vector(5, 10) + new Vector(26, 17));
-        [Test] public void Minus() => Assert.AreEqual(new Vector(-4, 11), new Vector(7, 20) - new Vector(11, 9));
-        [Test] public void Multiply() => Assert.AreEqual(23d, new Vector(2, 3) * new Vector(4, 5));
-        [Test] public void MultiplyInt() => Assert.AreEqual(new Vector(8, 12), new Vector(2, 3) * 4);
-        [Test] public void DivideInt() => Assert.AreEqual(new Vector(4, 6), new Vector(12, 18) / 3);
-        [Test] public void Negate() => Assert.AreEqual(new Vector(4, -5), -new Vector(-4, 5));
+        [Test] public void Plus() 
+            => Assert.That(new Vector(5, 10) + new Vector(26, 17), Is.EqualTo(new Vector(31, 27)));
+            
+        [Test] public void Minus() 
+            => Assert.That(new Vector(7, 20) - new Vector(11, 9), Is.EqualTo(new Vector(-4, 11)));
+            
+        [Test] public void Multiply() 
+            => Assert.That(new Vector(2, 3) * new Vector(4, 5), Is.EqualTo(23));
+        
+        [Test] public void MultiplyInt() 
+            => Assert.That(new Vector(2, 3) * 4, Is.EqualTo(new Vector(8, 12)));
+            
+        [Test] public void DivideInt() 
+            => Assert.That(new Vector(12, 18) / 3, Is.EqualTo(new Vector(4, 6)));
+            
+        [Test] public void Negate() 
+            => Assert.That(-new Vector(-4, 5), Is.EqualTo(new Vector(4, -5)));
+            
         // ReSharper disable EqualExpressionComparison
-        [Test] public void Equals() => Assert.True(new Vector(5, 10) == new Vector(5, 10));
-        [Test] public void NotEquals() => Assert.True(new Vector(5, 10) != new Vector(10, 5));
+        [Test] public void Equals() 
+            => Assert.True(new Vector(5, 10) == new Vector(5, 10));
+
+        [Test] public void NotEquals() 
+            => Assert.True(new Vector(5, 10) != new Vector(10, 5));
+
         // ReSharper enable EqualExpressionComparison
     }
 
     public class Equatable
     {
-        [Test] public void Equals() => Assert.True(Test.Equals(new Vector(4, -3)));
-        [Test] public void EqualsObject() => Assert.True(Test.Equals((object) new Vector(4, -3)));
-        [Test] public void HashCode() => Assert.AreEqual(new Vector(4, -3).GetHashCode(), Test.GetHashCode());
+        [Test] public void Equals() 
+            => Assert.True(Test.Equals(new Vector(4, -3)));
+
+        [Test] public void EqualsObject() 
+            => Assert.True(Test.Equals((object) new Vector(4, -3)));
+
+        [Test] public void HashCode() 
+            => Assert.That(Test.GetHashCode(), Is.EqualTo(new Vector(4, -3).GetHashCode()));
     }
 
-    [Test] public void String() => Assert.AreEqual("Vector<4,-3>", Test.ToString());
+    [Test] public void String() 
+        => Assert.That(Test.ToString(), Is.EqualTo("Vector<4,-3>"));
     
     }
 }
