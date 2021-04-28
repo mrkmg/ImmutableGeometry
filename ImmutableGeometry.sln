@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableGeometry", "ImmutableGeometry\ImmutableGeometry.csproj", "{23862A95-7A05-42D4-9914-97FAD86634FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableGeometry.Test", "ImmutableGeometry.Test\ImmutableGeometry.Test.csproj", "{A68E0B21-3AD6-4B45-89D1-6DA32EE73EA3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{23862A95-7A05-42D4-9914-97FAD86634FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23862A95-7A05-42D4-9914-97FAD86634FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23862A95-7A05-42D4-9914-97FAD86634FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23862A95-7A05-42D4-9914-97FAD86634FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A68E0B21-3AD6-4B45-89D1-6DA32EE73EA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A68E0B21-3AD6-4B45-89D1-6DA32EE73EA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A68E0B21-3AD6-4B45-89D1-6DA32EE73EA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A68E0B21-3AD6-4B45-89D1-6DA32EE73EA3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
