@@ -1,0 +1,28 @@
+﻿name: Publish on NuGet
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  nuget:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - name: Publish on NuGet and Tag
+        id: publish_nuget
+        uses: drusellers/publish-nuget@master
+        with:
+          project-file-path: ImmutableGeometry/ImmutableGeometry.csproj
+          package-name: Gravy.ImmutableGeometry
+          extract-version-regex: ^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$
+          tag-commit: true
+          tag-format: v*
+          nuget-key: ${{secrets.NUGET_KEY}}
+          nuget-source: https://api.nuget.org
+          include-symbols: true
