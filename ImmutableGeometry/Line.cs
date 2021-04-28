@@ -39,20 +39,14 @@ namespace ImmutableGeometry
         public static explicit operator Line(Vector vector)
             => new (Point.Zero, vector);
 
-        public static bool operator ==(Line left, Line right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(Line left, Line right) 
+            => Equals(left, right);
 
         public static bool operator !=(Line left, Line right)
-        {
-            return !Equals(left, right);
-        }
-        
+            => !Equals(left, right);
+
         protected bool Equals(Line other)
-        {
-            return Start == other.Start && End == other.End;
-        }
+            => Start == other.Start && End == other.End;
 
         public override bool Equals(object obj)
         {
@@ -63,11 +57,10 @@ namespace ImmutableGeometry
         }
 
         public override int GetHashCode()
-        {
-            return HashCode.Combine(Start, End);
-        }
+            => HashCode.Combine(Start, End);
 
-        public override string ToString() => $"Line<({Start}),({End})>";
+        public override string ToString() 
+            => $"Line<({Start}),({End})>";
 
         private IEnumerable<Point> GeneratePoints()
         {
@@ -86,8 +79,7 @@ namespace ImmutableGeometry
                 yield return End;
                 yield break;
             }
-            
-            
+
             var flipX = Delta.X < 0;
             var flipY = Delta.Y < 0;
             var target = new Point(flipX ? -Delta.X : Delta.X, flipY ? -Delta.Y : Delta.Y);
