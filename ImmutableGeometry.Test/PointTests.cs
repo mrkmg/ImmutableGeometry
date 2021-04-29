@@ -44,9 +44,6 @@ namespace ImmutableGeometry.Test.PointTests
     }
     
     public class Operators {
-        [Test] public void Plus() 
-            => Assert.That(new Point(5, 10) + new Point(26, 17), Is.EqualTo(new Vector(21, 7)));
-
         [Test] public void Minus() 
             => Assert.That(new Point(7, 20) - new Point(11, 9), Is.EqualTo(new Vector(-4, 11)));
 

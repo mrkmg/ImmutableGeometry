@@ -6,7 +6,7 @@ namespace ImmutableGeometry
 {
     public class Shape : IEquatable<Shape>
     {
-        private static readonly Vector[] Winding = {new (0, -1), new (-1, 0), new (0, 1), new (1, 0)};
+        private static readonly Vector[] CardinalDirectionVectors = {new (0, -1), new (-1, 0), new (0, 1), new (1, 0)};
         
         private IReadOnlyList<Point> _edgePoints;
         private IReadOnlyList<Point> _points;
@@ -24,12 +24,16 @@ namespace ImmutableGeometry
 
         public Shape(IEnumerable<Point> corners)
         {
+            // ensures corners are always in the same order
+            // needed for equality checks
             var cornersArray = corners.ToArray();
             var startPointIndex = 0;
             var startPoint = cornersArray[0];
             for (var i = 1; i < cornersArray.Length; i++)
             {
                 var p = cornersArray[i];
+                
+                // if x is less than or x is equal and y is less than
                 if (p.X >= startPoint.X && (p.X != startPoint.X || p.Y >= startPoint.Y)) continue;
                 startPointIndex = i;
                 startPoint = p;
@@ -71,14 +75,9 @@ namespace ImmutableGeometry
         {
             // Use the cheaper bounds check first
             if (!Bounds.IntersectsWith(other.Bounds)) return false;
-            if (Bounds.Area > other.Bounds.Area)
-            {
-                var myHash = Points.ToHashSet();
-                return other.Points.Any(p => myHash.Contains(p));
-            }
-
-            var otherHash = other.Points.ToHashSet();
-            return Points.Any(p => otherHash.Contains(p));
+            
+            var myHash = Points.ToHashSet();
+            return other.Points.Any(p => myHash.Contains(p));
         }
 
         public bool Equals(Shape other)
@@ -138,7 +137,7 @@ namespace ImmutableGeometry
                     var node = currentOpenNodes.Dequeue();
                     points[pointsTempLength++] = node;
                     
-                    foreach (var v in Winding)
+                    foreach (var v in CardinalDirectionVectors)
                     {
                         var c = node + v;
                         if (!Bounds.Contains(c))
@@ -166,7 +165,6 @@ namespace ImmutableGeometry
             {
                 var point = Corners[i];
                 var nextPoint = Corners[(i + 1) % Corners.Count];
-                // yield return GetLine(point, nextPoint);
                 var outline = point & (nextPoint - point);
                 yield return outline;
             }

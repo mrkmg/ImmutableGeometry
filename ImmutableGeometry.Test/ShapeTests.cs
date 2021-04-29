@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 
@@ -21,7 +22,7 @@ namespace ImmutableGeometry.Test.ShapeTests
         = new ((0, 0), (0, 5), (5, 5), (5, 0));
     
     private static readonly Shape TestDiamond 
-        = new ((0, -5), (-5, 0), (5, 5), (5, 0));
+        = new ((5, 0), (0, 5), (5, 10), (10, 5));
     
     private static readonly Shape TestTranslated 
         = new ((25,50), (25,55), (30,55), (30,60), (25,60), (25,65), (35,60), (35,53));
@@ -40,6 +41,15 @@ namespace ImmutableGeometry.Test.ShapeTests
     
     private static readonly Shape TestMirroredY 
         = new ((0,-15), (0,-10), (5,-10), (10,-10), (0,-5), (5,-5), (10,-3), (0,0));
+
+    public static readonly Shape ExpectedShapeDiamondIntersects
+        = TestDiamond.Translate(4, 0);
+    
+    public static readonly Shape ExpectedShapeDiamondCloseNotIntersecting
+        = TestDiamond.Translate(6, 6);
+    
+    public static readonly Shape ExpectedShapeDiamondNotIntersecting
+        = TestDiamond.Translate(20, 20);
 
     private static readonly Point[] ExpectedEdgePoints = TestHelpers.Points(
         (0,0), (0,1), (0,2), (0,3), (0,4), (0,5), (1,5), (2,5), (3,5), (4,5), (5,5), (5,6), (5,7), (5,8), (5,9), (5,10),
@@ -96,29 +106,38 @@ namespace ImmutableGeometry.Test.ShapeTests
 
         [Test] public void TranslateVector() 
             => Assert.That(TestShape.Translate(new Vector(25, 50)).Corners, Is.EquivalentTo(TestTranslated.Corners));
-    }
-    
-    public class Casts 
-    {
-    }
-    
-    public class Operators 
-    {
+
+        [Test] public void IntersectsWith()
+            => Assert.Multiple(() =>
+            {
+                Assert.True(TestDiamond.IntersectsWith(ExpectedShapeDiamondIntersects));
+                Assert.False(TestDiamond.IntersectsWith(ExpectedShapeDiamondCloseNotIntersecting));
+                Assert.False(TestDiamond.IntersectsWith(ExpectedShapeDiamondNotIntersecting));
+            });
     }
 
     public class Equatable
     {
-        [Test] public void Equals() => Assert.True(TestShape.Equals(TestWithNodesOutOfOrder));
-        [Test] public void EqualsRef() => Assert.True(TestShape.Equals(TestShape));
-        [Test] public void EqualsNull() => Assert.False(TestShape.Equals(null));
-        [Test] public void NotEqualsDifferentLength() => Assert.False(TestShape.Equals(TestSquare));
-        [Test] public void NotEqualsSameLength() => Assert.False(TestSquare.Equals(TestDiamond));
+        [Test] public void Equals()
+            => Assert.True(TestShape.Equals(TestWithNodesOutOfOrder));
+        [Test] public void EqualsRef()
+            => Assert.True(TestShape.Equals(TestShape));
+        [Test] public void EqualsNull()
+            => Assert.False(TestShape.Equals(null));
+        [Test] public void NotEqualsDifferentLength()
+            => Assert.False(TestShape.Equals(TestSquare));
+        [Test] public void NotEqualsSameLength()
+            => Assert.False(TestSquare.Equals(TestDiamond));
         
-        [Test] public void EqualsObject() => Assert.True(TestShape.Equals((object) TestWithNodesOutOfOrder));
-        [Test] public void EqualsObjectRef() => Assert.True(TestShape.Equals((object) TestShape));
-        [Test] public void EqualsObjectNull() => Assert.False(TestShape.Equals((object) null));
+        [Test] public void EqualsObject()
+            => Assert.True(TestShape.Equals((object) TestWithNodesOutOfOrder));
+        [Test] public void EqualsObjectRef()
+            => Assert.True(TestShape.Equals((object) TestShape));
+        [Test] public void EqualsObjectNull()
+            => Assert.False(TestShape.Equals((object) null));
         // ReSharper disable once SuspiciousTypeConversion.Global
-        [Test] public void EqualsObjectDifferentType() => Assert.False(TestShape.Equals(new Point()));
+        [Test] public void EqualsObjectDifferentType()
+            => Assert.False(TestShape.Equals(new Point()));
         
         [Test] public void HashCode() 
             => Assert.AreEqual(TestShape.GetHashCode(), TestWithNodesOutOfOrder.GetHashCode());

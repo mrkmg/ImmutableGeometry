@@ -66,6 +66,7 @@ namespace ImmutableGeometry.Test.LineTests
 
     public class Properties
     {
+        [Test]
         public void Points()
             => Assert.Multiple(() =>
             {
@@ -94,6 +95,28 @@ namespace ImmutableGeometry.Test.LineTests
 
         [Test] public void Rotate()
             => Assert.That(TestLine.Rotate(Math.PI), Is.EqualTo(ExpectedRotated));
+
+        [Test] public void IntersectsWith()
+            => Assert.Multiple(() =>
+            {
+                // Crosses
+                Assert.True(TestLine.IntersectsWith(new Line(3, 11, 7, 5)));
+                Assert.True(TestLine.IntersectsWith(new Line(7, 5, 3, 11)));
+                
+                // Cross but not intersects
+                Assert.False(TestLine.IntersectsWith(new Line(3, 11, 7, 5).Translate(10, 0)));
+                Assert.False(TestLine.IntersectsWith(new Line(7, 5, 3, 11).Translate(0, 10)));
+                
+                // End points
+                Assert.True(TestLine.IntersectsWith(new Line(7, 11, 20, 20)));
+                Assert.True(TestLine.IntersectsWith(new Line(0, 0, 3, 5)));
+                
+                // Near
+                Assert.False(TestLine.IntersectsWith(new Line(3, 6, 7, 12)));
+                Assert.False(TestLine.IntersectsWith(new Line(4, 5, 8, 11)));
+                Assert.False(TestLine.IntersectsWith(new Line(7, 12, 3, 6)));
+                Assert.False(TestLine.IntersectsWith(new Line(8, 11, 4, 5)));
+            });
     }
     
     public class Casts

@@ -7,6 +7,7 @@ namespace ImmutableGeometry
     /// </summary>
     public readonly struct Size : IComparable<Size>, IEquatable<Size>
     {
+        public static Size Zero = default;
         public readonly int Width;
         public readonly int Height;
         public int Area => Width * Height;

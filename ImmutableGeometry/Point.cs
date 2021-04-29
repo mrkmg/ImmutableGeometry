@@ -3,7 +3,7 @@
 namespace ImmutableGeometry
 {
     /// <summary>
-    /// Represents an X and Y
+    /// Represents point in an X and Y plane
     /// </summary>
     public readonly struct Point : IEquatable<Point>
     {
@@ -50,9 +50,6 @@ namespace ImmutableGeometry
 
         public static Point operator -(Point point)
             => new(-point.X, -point.Y);
-
-        public static Vector operator +(Point from, Point to)
-            => new(to.X - from.X, to.Y - from.Y);
 
         public static Vector operator -(Point to, Point from)
             => new(to.X - from.X, to.Y - from.Y);

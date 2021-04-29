@@ -7,8 +7,11 @@ namespace ImmutableGeometry
     /// </summary>
     public readonly struct Vector : IEquatable<Vector>
     {
+        public static Vector Zero = default;
+        
         public readonly int X;
         public readonly int Y;
+        
         public double UnitX => !IsZero ? X / Magnitude : 0;
         public double UnitY => !IsZero ? Y / Magnitude : 0;
         public double Magnitude => Math.Sqrt(X*X + Y*Y);
